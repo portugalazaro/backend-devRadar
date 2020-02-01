@@ -10,6 +10,7 @@ module.exports = {
     },
 
     async store(req,res){
+
         const {user_name, techs, latitude, longitude} = req.body 
 
         let dev = await Dev.findOne({github_username: user_name.toLowerCase().trim()});
@@ -36,8 +37,8 @@ module.exports = {
                 techs: arrayTechs,
                 location
             })
-
-            return res.json(dev)
+            
+            return res.status(201).json(dev)
         } 
 
         return res.json({erro: "usuario ja existe"})
@@ -74,5 +75,23 @@ module.exports = {
             return res.json({erro: "usuario nao existe!"})
         }
         res.json(dev)
+    },
+
+
+    async onlyPart(req,res){
+
+        const {_id, techs}  = req.body;
+        let dev = await Dev.findOne({_id});
+
+        if(!dev){
+            return res.json({dev: "Usuario nao existe na base de dados"});
+        }
+
+        dev  = await Dev.findByIdAndUpdate({_id},{
+            techs: ParseStringAsArray(techs)
+        }, {new: true});
+
+        return res.json(dev)
     }
+
 }

@@ -8,6 +8,7 @@ router.get("/devs", devController.index)
 router.post("/devs", devController.store);
 router.get("/search", searchController.index);
 router.put("/devs", devController.update);
+// router.patch("/devs", devController.onlyPart)
 router.delete("/devs/:github_username", devController.destroy);
 
 router.get('/devs/:github_username',devController.dev);
